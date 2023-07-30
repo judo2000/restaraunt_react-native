@@ -1,17 +1,35 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import SearchBar from '../components/SearchBar';
+import yelp from '../api/yelp';
 
 const SearchScreen = () => {
   const [term, setTerm] = useState('');
+  const [results, setResults] = useState([]);
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const searchApi = async () => {
+    try {
+      setErrorMsg('');
+      const response = await yelp.get('/search', {
+        params: {
+          limit: 50,
+          term,
+          location: 'denver',
+        },
+      });
+
+      setResults(response.data.businesses);
+    } catch (err) {
+      setErrorMsg('Something went wrong');
+    }
+  };
+
   return (
     <View>
-      <SearchBar
-        term={term}
-        onTermChange={(newTerm) => setTerm(newTerm)}
-        onTermSubmit={() => console.log('Term was submitted')}
-      />
-      <Text>{term}</Text>
+      <SearchBar term={term} onTermChange={setTerm} onTermSubmit={searchApi} />
+      {errorMsg ? <Text>{errorMsg}</Text> : null}
+      <Text>We have found {results.length} results.</Text>
     </View>
   );
 };
