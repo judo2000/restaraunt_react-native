@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 import yelp from '../api/yelp';
 
-const ResultsShowScreen = ({ navigation }) => {
+const ResultsShowScreen = ({ route }) => {
   const [result, setResult] = useState(null);
-  const id = navigation.getParam('id');
+  const id = route.params.id;
 
   const getResult = async (id) => {
     const response = await yelp.get(`/${id}`);

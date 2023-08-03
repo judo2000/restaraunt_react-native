@@ -7,9 +7,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import ResultsDetail from './ResultsDetail';
-import { withNavigation } from 'react-navigation';
+import { useNavigation } from '@react-navigation/native';
 
-const ResultsList = ({ title, results, navigation }) => {
+const ResultsList = ({ title, results }) => {
+  const navigation = useNavigation();
+
   if (!results.length) {
     return null;
   }
@@ -50,4 +52,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withNavigation(ResultsList);
+export default ResultsList;
